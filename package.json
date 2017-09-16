@@ -5,7 +5,7 @@
   "repository": "purplecones/jrnl-cli",
   "scripts": {
     "start": "node build/main.js",
-    "prestart": "npm run build",
+    "prestart": "npm run build && chmod +x build/main.js",
     "build": "backpack build",
     "prepublish": "npm run build"
   },
