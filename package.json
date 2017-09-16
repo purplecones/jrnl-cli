@@ -1,0 +1,18 @@
+{
+  "name": "jrnl",
+  "description": "Tool for writing journal entries from the command line",
+  "version": "0.0.1",
+  "scripts": {
+    "start": "node build/main.js",
+    "prestart": "backpack build"
+  },
+  "preferGlobal": true,
+  "bin": "./build/main.js",
+  "dependencies": {
+    "backpack-core": "^0.4.2",
+    "commander": "^2.11.0",
+    "file-system": "^2.2.2",
+    "inquirer": "^3.2.3",
+    "nedb": "^1.8.0"
+  }
+}
