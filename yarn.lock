@@ -3361,10 +3361,6 @@ webpack-node-externals@^1.6.0:
   version "1.6.0"
   resolved "https://registry.yarnpkg.com/webpack-node-externals/-/webpack-node-externals-1.6.0.tgz#232c62ec6092b100635a3d29d83c1747128df9bd"
 
-webpack-raw-bundler@^1.3.6:
-  version "1.3.6"
-  resolved "https://registry.yarnpkg.com/webpack-raw-bundler/-/webpack-raw-bundler-1.3.6.tgz#4cb1c57fa4b9de118fff28ec4b471229f6a4e2fc"
-
 webpack-sources@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/webpack-sources/-/webpack-sources-1.0.1.tgz#c7356436a4d13123be2e2426a05d1dad9cbe65cf"
