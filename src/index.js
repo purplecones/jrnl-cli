@@ -9,7 +9,7 @@ program
 program
   .command('add')
   .alias('a')
-  .description('Add new enty')
+  .description('Add new entry')
   .action(() => {
     var questions = [
       {
