@@ -1,7 +1,7 @@
 {
   "name": "jrnl",
   "description": "Tool for writing journal entries from the command line",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "repository": "purplecones/jrnl-cli",
   "scripts": {
     "start": "node build/main.js",

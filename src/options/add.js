@@ -12,8 +12,9 @@ export default () => {
       name: 'entry',
       message: 'Write your entry',
       validate: async text => {
-        const title = text.split('\n')[0];
-        const content = text.split('\n')[1];
+        const textLines = text.split('\n');
+        const title = textLines[0];
+        const content = textLines.slice(1).join('\n');
         const date = new Date();
         const fileName = `${moment(date).format(
           'YYYYMMDD',

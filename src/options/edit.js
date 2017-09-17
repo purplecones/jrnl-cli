@@ -1,8 +1,7 @@
 import inquirer from 'inquirer';
-import { writeFile } from '../api/files';
-import { findEntry, findEntries } from '../api/localdb';
-import { cat, echo } from '../api/shell';
 import moment from 'moment';
+import { findEntry, findEntries } from '../api/localdb';
+import { editor } from '../api/shell';
 
 export default async () => {
   const entries = await findEntries();
@@ -11,7 +10,7 @@ export default async () => {
       {
         type: 'list',
         name: 'entryId',
-        message: 'Which entry do you want to read?',
+        message: 'Which entry do you want to edit?',
         choices: [
           ...entries.map(entry => ({
             value: entry._id,
@@ -24,7 +23,6 @@ export default async () => {
     ])
     .then(async d => {
       const entry = await findEntry(d.entryId);
-      const text = cat(entry.filePath);
-      echo(text);
+      editor(entry.filePath);
     });
 };
