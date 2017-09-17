@@ -2,7 +2,7 @@ import program from 'commander';
 import { add, read, edit, config } from './options';
 
 program
-  .version('0.0.8')
+  .version('0.0.9')
   .description('Tool for writing journal entries from the command line');
 
 program
