@@ -20,7 +20,7 @@ export default () => {
         textLines[0] = `# ${textLines[0]}`;
         const content = textLines.join('\n');
         const fileName = `${moment(date).format(
-          'YYYYMMDD',
+          'YYYYMMDDHHMM',
         )}-${changeCase.headerCase(title)}.md`;
         const filePath = `${filesPath}/${fileName}`;
 
