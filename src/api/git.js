@@ -14,7 +14,7 @@ export const init = async () => {
 
 export const commit = async (message = undefined) => {
   const date = moment().format('ddd, MMM Do YYYY');
-  const time = moment().format('h:s A');
+  const time = moment().format('hh:ss A');
   if (!message) message = `Journal updated on ${date} at ${time}`;
   cd(jrnlPath);
   await exec('git add .');
