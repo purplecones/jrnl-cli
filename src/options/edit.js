@@ -2,6 +2,7 @@ import inquirer from 'inquirer';
 import moment from 'moment';
 import { findEntry, findEntries } from '../api/localdb';
 import { editor } from '../api/shell';
+import { init, commit, push } from '../api/git';
 
 export default async () => {
   const entries = await findEntries();
@@ -23,6 +24,11 @@ export default async () => {
     ])
     .then(async d => {
       const entry = await findEntry(d.entryId);
-      editor(entry.filePath);
+      const childProcess = editor(entry.filePath);
+      childProcess.on('exit', () => {
+        init();
+        commit();
+        push();
+      })
     });
 };

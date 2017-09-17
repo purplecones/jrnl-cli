@@ -22,5 +22,5 @@ program
   .alias('e')
   .description('Edit an entry')
   .action(() => edit());
-
+  
 program.parse(process.argv);

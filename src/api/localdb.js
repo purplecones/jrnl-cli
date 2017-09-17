@@ -7,6 +7,7 @@ makeFolder(dbPath);
 
 // prepate local db connection
 const journals = new Datastore({ filename: `${dbPath}/journals.db` });
+const config = new Datastore({ filename: `${dbPath}/config.db` });
 
 export const addEntry = entry => {
   journals.loadDatabase();
@@ -33,7 +34,14 @@ export const findEntry = entryId => {
   return new Promise((resolve, reject) => {
     journals.findOne(
       { _id: entryId },
-      (err, docs) => (err ? reject(err) : resolve(docs)),
+      (err, doc) => (err ? reject(err) : resolve(doc)),
     );
+  });
+};
+
+export const findConfig = () => {
+  config.loadDatabase();
+  return new Promise((resolve, reject) => {
+    config.findOne({}, (err, doc) => (err ? reject(err) : resolve(doc)));
   });
 };

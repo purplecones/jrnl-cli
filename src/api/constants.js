@@ -1,5 +1,6 @@
 import os from 'os';
 
-export const filesPath = `${os.homedir()}/.jrnl/files`;
-export const dbPath = `${os.homedir()}/.jrnl/data`;
+export const jrnlPath = `${os.homedir()}/.jrnl`;
+export const filesPath = `${jrnlPath}/files`;
+export const dbPath = `${jrnlPath}/data`;
 export const currentEditor = process.env.EDITOR || 'vi';;

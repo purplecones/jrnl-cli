@@ -1,9 +1,11 @@
 import inquirer from 'inquirer';
 import moment from 'moment';
 import changeCase from 'change-case';
-import { filesPath } from '../api/constants';
+import { filesPath, jrnlPath } from '../api/constants';
 import { writeFile } from '../api/files';
 import { addEntry } from '../api/localdb';
+import { pathExists } from '../api/shell';
+import { init, commit, push } from '../api/git';
 
 export default () => {
   const questions = [
@@ -14,8 +16,9 @@ export default () => {
       validate: async text => {
         const textLines = text.split('\n');
         const title = textLines[0];
-        const content = textLines.slice(1).join('\n');
         const date = new Date();
+        textLines[0] = `# ${textLines[0]}`;
+        const content = textLines.join('\n');
         const fileName = `${moment(date).format(
           'YYYYMMDD',
         )}-${changeCase.headerCase(title)}.md`;
@@ -27,6 +30,9 @@ export default () => {
           filePath,
           date,
         });
+        if (!pathExists(`${jrnlPath}/.git`)) init();
+        commit();
+        push();
 
         return true;
       },
