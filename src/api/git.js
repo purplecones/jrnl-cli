@@ -1,4 +1,4 @@
-import { cd, exec } from './shell';
+import { cd, exec, which } from './shell';
 import { jrnlPath } from './constants';
 import { getConfig } from '../api/localdb';
 import moment from 'moment';
@@ -31,3 +31,5 @@ export const setRemote = async () => {
   const config = await getConfig();
   exec(`git remote add origin ${config.repo}`);
 };
+
+export const isGitInstalled = () => which('git');

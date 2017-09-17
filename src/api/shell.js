@@ -5,6 +5,7 @@ import { currentEditor } from './constants';
 export const echo = filePath => shell.echo(filePath);
 export const cat = filePath => shell.cat(filePath);
 export const cd = path => shell.cd(path);
+export const which = name => shell.which(name);
 export const exec = command =>
   new Promise((resolve, reject) => {
     shell.exec(command, (code, stdout, stderr) => {
