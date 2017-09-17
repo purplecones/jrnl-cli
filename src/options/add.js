@@ -14,11 +14,15 @@ export default () => {
       name: 'entry',
       message: 'Write your entry',
       validate: async text => {
+        const date = new Date();
         const textLines = text.split('\n');
         const title = textLines[0];
-        const date = new Date();
-        textLines[0] = `# ${textLines[0]}`;
-        const content = textLines.join('\n');
+        const mdTitle = `## ${textLines[0]}`;
+        const mdDate = `###### Written on ${moment(date).format(
+          'ddd, MMM Do YYYY',
+        )} at ${moment(date).format('hh:ss A')}`;
+        const modifiedTextLines = [mdTitle, mdDate, ...textLines.slice(1)];
+        const content = modifiedTextLines.join('\n');
         const fileName = `${moment(date).format(
           'YYYYMMDDHHMM',
         )}-${changeCase.headerCase(title)}.md`;
