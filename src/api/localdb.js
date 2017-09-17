@@ -1,6 +1,7 @@
 import Datastore from 'nedb';
 import { dbPath } from './constants';
 import { makeFolder } from './files';
+import { merge } from 'lodash';
 
 // create folders if they dont exist
 makeFolder(dbPath);
@@ -39,9 +40,23 @@ export const findEntry = entryId => {
   });
 };
 
-export const findConfig = () => {
+export const getConfig = () => {
   config.loadDatabase();
   return new Promise((resolve, reject) => {
     config.findOne({}, (err, doc) => (err ? reject(err) : resolve(doc)));
+  });
+};
+
+export const updateConfig = async newConfig => {
+  config.loadDatabase();
+  const currentConfig = await getConfig() || undefined;
+  return new Promise((resolve, reject) => {
+    if (currentConfig) {
+      // update config
+      config.update({ _id: currentConfig._id }, { $set: newConfig }, (err, doc) => (err ? reject(err) : resolve(doc)));
+    } else {
+      // insert new config
+      config.insert(newConfig, (err, doc) => (err ? reject(err) : resolve(doc)));
+    }
   });
 };

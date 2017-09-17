@@ -1,5 +1,6 @@
 import { cd, exec } from './shell';
 import { jrnlPath } from './constants';
+import { getConfig } from '../api/localdb';
 import moment from 'moment';
 
 export const init = () => {
@@ -22,7 +23,8 @@ export const push = () => {
   exec('git push -u origin master');
 };
 
-export const setRemote = () => {
+export const setRemote = async () => {
   cd(jrnlPath);
-  exec('git remote add origin https://github.com/purplecones/jrnl.git');
+  const config = await getConfig();
+  exec(`git remote add origin ${config.repo}`);
 };

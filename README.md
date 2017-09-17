@@ -1,5 +1,10 @@
+## Features
+- Ability to write, read and backup journal entries via the command line
+- Optional backup via git services like Github
+
 ## Usage
 ```
+
 Usage: jrnl [options] [command]
 
 Tool for writing journal entries from the command line
@@ -13,6 +18,9 @@ Options:
 
 Commands:
 
-  add|a    Add new entry
-  read|r   Read an entry
+  add|a      Add new entry
+  read|r     Read an entry
+  edit|e     Edit an entry
+  config|c   Configure tool
+
 ```

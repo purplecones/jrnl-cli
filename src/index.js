@@ -1,8 +1,8 @@
 import program from 'commander';
-import { add, read, edit } from './options';
+import { add, read, edit, config } from './options';
 
 program
-  .version('0.0.6')
+  .version('0.0.7')
   .description('Tool for writing journal entries from the command line');
 
 program
@@ -22,5 +22,11 @@ program
   .alias('e')
   .description('Edit an entry')
   .action(() => edit());
-  
+
+program
+  .command('config')
+  .alias('c')
+  .description('Configure tool')
+  .action(() => config());
+
 program.parse(process.argv);
