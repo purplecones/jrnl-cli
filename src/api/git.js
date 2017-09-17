@@ -3,24 +3,27 @@ import { jrnlPath } from './constants';
 import { getConfig } from '../api/localdb';
 import moment from 'moment';
 
-export const init = () => {
+export const init = async () => {
   cd(jrnlPath);
-  exec('git init');
-  commit();
-  setRemote();
+  await exec('git init');
+  await commit('Initializing repo for the first time');
+  const config = await getConfig();
+  await exec(`git remote add origin ${config.repo}`);
+  await push();
 };
 
-export const commit = () => {
+export const commit = async (message = undefined) => {
+  const date = moment().format('ddd, MMM Do YYYY');
+  const time = moment().format('h:s A');
+  if (!message) message = `Journal updated on ${date} at ${time}`;
   cd(jrnlPath);
-  exec('git add .');
-  exec(
-    `git commit -m 'Journal update for ${moment().format('ddd, MMM Do YYYY')}'`,
-  );
+  await exec('git add .');
+  await exec(`git commit -m '${message}'`);
 };
 
-export const push = () => {
+export const push = async () => {
   cd(jrnlPath);
-  exec('git push -u origin master');
+  await exec('git push -u origin master');
 };
 
 export const setRemote = async () => {

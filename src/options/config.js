@@ -1,5 +1,8 @@
 import inquirer from 'inquirer';
 import { updateConfig } from '../api/localdb';
+import { pathExists } from '../api/shell';
+import { jrnlPath } from '../api/constants';
+import { init } from '../api/git';
 
 export default async () => {
   inquirer
@@ -23,8 +26,13 @@ export default async () => {
         when: answers => answers.git,
       },
     ])
-    .then(answers => {
+    .then(async answers => {
       if (answers.configOptions === 'git')
-        updateConfig({ useGit: answers.git, repo: answers.repo });
+        await updateConfig({ useGit: answers.git, repo: answers.repo });
+        if (!await pathExists(`${jrnlPath}/.git`)) {
+          init();
+        } else {
+          throw Error('.git folder already exits')
+        }
     });
 };

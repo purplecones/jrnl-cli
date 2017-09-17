@@ -1,10 +1,9 @@
 import inquirer from 'inquirer';
 import moment from 'moment';
 import changeCase from 'change-case';
-import { filesPath, jrnlPath } from '../api/constants';
+import { filesPath } from '../api/constants';
 import { writeFile } from '../api/files';
 import { addEntry } from '../api/localdb';
-import { pathExists } from '../api/shell';
 import { init, commit, push } from '../api/git';
 import { getConfig } from '../api/localdb';
 
@@ -34,10 +33,9 @@ export default () => {
 
         // commit and push using git if enabled
         const config = await getConfig();
-        if (config.useGit) {
-          if (!pathExists(`${jrnlPath}/.git`)) init();
-          commit();
-          push();
+        if (config && config.useGit) {
+          await commit();
+          await push();
         }
 
         return true;
