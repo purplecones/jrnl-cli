@@ -1,6 +1,5 @@
 import program from 'commander';
-import inquirer from 'inquirer';
-import { addEntry } from './localdb';
+import { add, read } from './options';
 
 program
   .version('0.0.1')
@@ -10,22 +9,12 @@ program
   .command('add')
   .alias('a')
   .description('Add new entry')
-  .action(() => {
-    var questions = [
-      {
-        type: 'editor',
-        name: 'entry',
-        message: 'Write your entry',
-        validate: function(text) {
-          addEntry(text);
-          return true;
-        },
-      },
-    ];
+  .action(() => add());
 
-    inquirer.prompt(questions).then(function(answers) {
-      console.log(JSON.stringify(answers, null, '  '));
-    });
-  });
+program
+  .command('read')
+  .alias('r')
+  .description('Read an entry')
+  .action(() => read());
 
 program.parse(process.argv);
