@@ -6,6 +6,7 @@ import { writeFile } from '../api/files';
 import { addEntry } from '../api/localdb';
 import { init, commit, push } from '../api/git';
 import { getConfig } from '../api/localdb';
+import { getSentimentScore } from '../api/sentiment';
 
 export default () => {
   const questions = [
@@ -27,12 +28,15 @@ export default () => {
           'YYYYMMDDHHMM',
         )}-${changeCase.headerCase(title)}.md`;
         const filePath = `${filesPath}/${fileName}`;
+        // remove newlines for sentiment analysis
+        const sentiment = getSentimentScore(text.replace(/[^\x20-\x7E]/gmi, ""));
 
         await writeFile(filePath, content);
         await addEntry({
           title,
           filePath,
           date,
+          sentiment,
         });
 
         // commit and push using git if enabled

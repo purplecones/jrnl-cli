@@ -20,6 +20,19 @@ export const addEntry = entry => {
   });
 };
 
+export const editEntry = (id, data) => {
+  journals.loadDatabase();
+  return new Promise((resolve, reject) => {
+    journals.update(
+      { _id: id },
+      {
+        $set: data
+      },
+      (err, updatedDoc) => (err ? reject(err) : resolve(updatedDoc)),
+    );
+  });
+};
+
 export const findEntries = (max, skip) => {
   journals.loadDatabase();
   return new Promise((resolve, reject) => {

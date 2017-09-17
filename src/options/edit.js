@@ -1,8 +1,10 @@
 import inquirer from 'inquirer';
 import moment from 'moment';
-import { findEntry, findEntries, getConfig } from '../api/localdb';
+import { findEntry, findEntries, getConfig, editEntry } from '../api/localdb';
 import { editor } from '../api/shell';
 import { init, commit, push } from '../api/git';
+import { readFile } from '../api/files';
+import { getSentimentScore } from '../api/sentiment';
 
 const showEntriesPrompt = async (max = 20, skip = 0) => {
   const entries = await findEntries(max, skip);
@@ -34,7 +36,12 @@ const handleAnswer = async answer => {
   } else {
     const entry = await findEntry(answer);
     const childProcess = editor(entry.filePath);
+
     childProcess.on('exit', async () => {
+      const text = await readFile(entry.filePath);
+      const sentiment = getSentimentScore(text.replace(/[^\x20-\x7E]/gim, ''));
+      await editEntry(entry._id, { sentiment });
+
       // commit and push using git if enabled
       const config = await getConfig();
       if (config && config.useGit) {
@@ -43,6 +50,6 @@ const handleAnswer = async answer => {
       }
     });
   }
-}
+};
 
 export default showEntriesPrompt;

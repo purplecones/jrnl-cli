@@ -3039,6 +3039,10 @@ sentence-case@^2.1.0:
     no-case "^2.2.0"
     upper-case-first "^1.1.2"
 
+sentiment@^4.0.1:
+  version "4.0.1"
+  resolved "https://registry.yarnpkg.com/sentiment/-/sentiment-4.0.1.tgz#9fd257ecbc2c64beada3a699d23aff40122cffef"
+
 set-blocking@^2.0.0, set-blocking@~2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/set-blocking/-/set-blocking-2.0.0.tgz#045f9782d011ae9a6803ddd382b24392b3d890f7"

@@ -7,6 +7,13 @@ export const writeFile = (filePath, content) => {
   });
 };
 
+export const readFile = filePath => {
+  return new Promise((resolve, reject) => {
+    fs.readFile(filePath, 'utf-8', (err, contents) => (err ? reject(err) : resolve(contents)));
+  });
+}
+
 export const makeFolder = path => fs.mkdir(path, err => err && console.error(err));
+
 
 makeFolder(filesPath);
