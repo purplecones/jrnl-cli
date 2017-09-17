@@ -20,12 +20,14 @@ export const addEntry = entry => {
   });
 };
 
-export const findEntries = (max = 5) => {
+export const findEntries = (max, skip) => {
   journals.loadDatabase();
   return new Promise((resolve, reject) => {
     journals
       .find({})
-      .sort({ date: 0 })
+      .sort({ date: -1 })
+      .skip(skip)
+      .limit(max)
       .exec((err, docs) => (err ? reject(err) : resolve(docs)));
   });
 };
