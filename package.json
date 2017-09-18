@@ -21,7 +21,6 @@
     "moment": "^2.18.1",
     "nedb": "^1.8.0",
     "sentiment": "^4.0.1",
-    "shelljs": "^0.7.8",
-    "unescape": "^1.0.1"
+    "shelljs": "^0.7.8"
   }
 }
