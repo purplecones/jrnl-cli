@@ -1,6 +1,7 @@
 ## Features
 - Ability to write, read and backup journal entries via the command line
 - Optional backup via git services like Github
+- Auto-generating README.md for table of contents
 
 ## Usage
 ```
