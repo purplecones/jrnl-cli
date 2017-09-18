@@ -3,12 +3,12 @@ import { jrnlPath } from './constants';
 import { getConfig } from '../api/localdb';
 import moment from 'moment';
 
-export const init = async () => {
+export const init = async repo => {
   cd(jrnlPath);
   await exec('git init');
+  await exec('git checkout -b data');
   await commit('Initializing repo for the first time');
-  const config = await getConfig();
-  await exec(`git remote add origin ${config.repo}`);
+  await setRemote(repo);
   await push();
 };
 
@@ -23,13 +23,12 @@ export const commit = async (message = undefined) => {
 
 export const push = async () => {
   cd(jrnlPath);
-  await exec('git push -u origin master');
+  await exec('git push -u origin data');
 };
 
-export const setRemote = async () => {
+export const setRemote = async repo => {
   cd(jrnlPath);
-  const config = await getConfig();
-  exec(`git remote add origin ${config.repo}`);
+  exec(`git remote add origin ${repo}`);
 };
 
 export const isGitInstalled = () => which('git');

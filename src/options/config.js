@@ -38,7 +38,7 @@ export default async () => {
         if (await pathExists(`${jrnlPath}/.git`)) {
           console.log('.git folder already exits. Config saved however you might run into sync issues. Remove the .git folder and run this command again.');
         } else {
-          await init();
+          await init(answers.repo);
         }
     });
 };
