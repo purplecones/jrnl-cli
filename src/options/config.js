@@ -1,5 +1,5 @@
 import inquirer from 'inquirer';
-import { updateConfig } from '../api/localdb';
+import { updateConfig } from '../api/db';
 import { pathExists } from '../api/shell';
 import { jrnlPath } from '../api/constants';
 import { init, isGitInstalled } from '../api/git';

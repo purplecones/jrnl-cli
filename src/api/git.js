@@ -1,6 +1,6 @@
 import { cd, exec, which } from './shell';
 import { jrnlPath } from './constants';
-import { getConfig } from '../api/localdb';
+import { getConfig } from '../api/db';
 import moment from 'moment';
 
 export const init = async repo => {

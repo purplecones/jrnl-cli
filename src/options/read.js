@@ -1,6 +1,6 @@
 import inquirer from 'inquirer';
 import { writeFile } from '../api/files';
-import { findEntry, findEntries } from '../api/localdb';
+import { findEntry, findEntries } from '../api/db';
 import { cat, echo } from '../api/shell';
 import moment from 'moment';
 

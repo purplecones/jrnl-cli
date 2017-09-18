@@ -1,6 +1,6 @@
 import inquirer from 'inquirer';
 import moment from 'moment';
-import { findEntry, findEntries, getConfig, editEntry } from '../api/localdb';
+import { findEntry, findEntries, getConfig, editEntry } from '../api/db';
 import { editor } from '../api/shell';
 import { init, commit, push } from '../api/git';
 import { readFile } from '../api/files';

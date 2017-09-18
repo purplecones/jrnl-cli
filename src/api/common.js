@@ -1,6 +1,6 @@
 import moment from 'moment';
 import { getMarkdownTable } from './markdown';
-import { findEntries } from './localdb';
+import { findEntries } from './db';
 import { writeFile } from './files';
 import { jrnlPath } from '../api/constants';
 
