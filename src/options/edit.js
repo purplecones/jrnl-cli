@@ -5,6 +5,7 @@ import { editor } from '../api/shell';
 import { init, commit, push } from '../api/git';
 import { readFile } from '../api/files';
 import { getSentimentScore } from '../api/sentiment';
+import { generateReadme } from '../api/common';
 
 const showEntriesPrompt = async (max = 20, skip = 0) => {
   const entries = await findEntries(max, skip);
@@ -42,6 +43,8 @@ const handleAnswer = async answer => {
       const sentiment = getSentimentScore(text.replace(/[^\x20-\x7E]/gim, ''));
       await editEntry(entry._id, { sentiment });
 
+      await generateReadme();
+      
       // commit and push using git if enabled
       const config = await getConfig();
       if (config && config.useGit) {
