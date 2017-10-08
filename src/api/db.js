@@ -1,7 +1,7 @@
 import Datastore from 'nedb';
+import { merge } from 'lodash';
 import { dbPath } from './constants';
 import { makeFolder } from './files';
-import { merge } from 'lodash';
 
 // create folders if they dont exist
 makeFolder(dbPath);
@@ -69,7 +69,7 @@ export const findEntriesByFileName = fileNames => {
   journals.loadDatabase();
   return new Promise((resolve, reject) => {
     journals.find(
-      { fileName: { $in: fileNames }},
+      { fileName: { $in: fileNames } },
       (err, doc) => (err ? reject(err) : resolve(doc)),
     );
   });

@@ -1,60 +1,53 @@
 import inquirer from 'inquirer';
-import moment from 'moment';
-import { findEntry, findEntries, getConfig, editEntry } from '../api/db';
+import autocomplete from 'inquirer-autocomplete-prompt';
+import { fuzzySearch, readFile, searchFile } from '../api/files.js';
+import {
+  findEntryByTitle,
+  getConfig,
+  editEntry,
+  findEntriesByFileName,
+} from '../api/db';
 import { editor } from '../api/shell';
-import { init, pull, commit, push } from '../api/git';
-import { readFile } from '../api/files';
+import { pull, commit, push } from '../api/git';
 import { getSentimentScore } from '../api/sentiment';
 import { generateReadme } from '../api/common';
 
-const showEntriesPrompt = async (max = 20, skip = 0) => {
+const showEntriesPrompt = async () => {
   const config = await getConfig();
   if (config && config.useGit) {
     await pull();
   }
-  const entries = await findEntries(max, skip);
+  inquirer.registerPrompt('autocomplete', autocomplete);
+
   inquirer
     .prompt([
       {
-        type: 'list',
-        name: 'answer',
-        message: 'Which entry do you want to edit?',
-        choices: [
-          ...entries.map(entry => ({
-            value: entry._id,
-            name: `${moment(entry.date).format(
-              'YYYY-MM-DD HH:mm',
-            )} | ${entry.title}`,
-          })),
-          new inquirer.Separator(),
-          'load more',
-          new inquirer.Separator(),
-        ],
+        type: 'autocomplete',
+        name: 'title',
+        message: 'Search for entries by content',
+        source: async (answersSoFar, input) => {
+          const fileNames = await fuzzySearch(input);
+          const entryNames = await findEntriesByFileName(fileNames);
+          return entryNames.map(e => e.title);
+        },
       },
     ])
-    .then(async d => handleAnswer(d.answer));
-};
-
-const handleAnswer = async answer => {
-  if (answer === 'load more') {
-    showEntries(max, max + skip);
-  } else {
-    const entry = await findEntry(answer);
-    const childProcess = editor(entry.filePath);
-
-    childProcess.on('exit', async () => {
-      const text = await readFile(entry.filePath);
-      const sentiment = getSentimentScore(text.replace(/[^\x20-\x7E]/gim, ''));
-      await editEntry(entry._id, { sentiment });
-
-      await generateReadme();
-
-      if (config && config.useGit) {
-        await commit();
-        await push();
-      }
+    .then(async answer => {
+      const entry = await findEntryByTitle(answer.title);
+      const childProcess = editor(entry.filePath);
+      childProcess.on('exit', async () => {
+        const text = await readFile(entry.filePath);
+        const sentiment = getSentimentScore(
+          text.replace(/[^\x20-\x7E]/gim, ''),
+        );
+        await editEntry(entry._id, { sentiment });
+        await generateReadme();
+        if (config && config.useGit) {
+          await commit();
+          await push();
+        }
+      });
     });
-  }
 };
 
 export default showEntriesPrompt;

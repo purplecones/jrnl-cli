@@ -14,7 +14,14 @@ export const exec = command =>
     });
   });
 export const pathExists = path => shell.test('-e', path);
-export const editor = filePath =>
-  spawn(currentEditor, [filePath], {
+export const editor = (filePath, readOnly = false) => {
+  let readOnlyShellFlag;
+  if (currentEditor === 'vim') {
+    readOnlyShellFlag = '-M';
+  }
+  const options = [filePath];
+  if (readOnly) options.push(readOnlyShellFlag);
+  return spawn(currentEditor, options, {
     stdio: 'inherit',
   });
+};

@@ -1,46 +1,34 @@
 import inquirer from 'inquirer';
-import { writeFile } from '../api/files';
-import { findEntry, findEntries, getConfig } from '../api/db';
+import autocomplete from 'inquirer-autocomplete-prompt';
+import { fuzzySearch } from '../api/files.js';
+import { findEntriesByFileName, findEntryByTitle, getConfig } from '../api/db';
+import { editor } from '../api/shell';
 import { pull } from '../api/git';
-import { cat, echo } from '../api/shell';
-import moment from 'moment';
 
-const showEntriesPrompt = async (max = 20, skip = 0) => {
+const showEntriesPrompt = async () => {
   const config = await getConfig();
   if (config && config.useGit) {
     await pull();
   }
-  const entries = await findEntries(max, skip);
+  inquirer.registerPrompt('autocomplete', autocomplete);
+
   inquirer
     .prompt([
       {
-        type: 'list',
-        name: 'answer',
-        message: 'Which entry do you want to read?',
-        choices: [
-          ...entries.map(entry => ({
-            value: entry._id,
-            name: `${moment(entry.date).format(
-              'YYYY-MM-DD HH:mm',
-            )} | ${entry.title}`,
-          })),
-          new inquirer.Separator(),
-          'load more',
-          new inquirer.Separator(),
-        ],
+        type: 'autocomplete',
+        name: 'title',
+        message: 'Search for entries by content',
+        source: async (answersSoFar, input) => {
+          const fileNames = await fuzzySearch(input);
+          const entryNames = await findEntriesByFileName(fileNames);
+          return entryNames.map(e => e.title);
+        },
       },
     ])
-    .then(async d => handleAnswer(d.answer));
-};
-
-const handleAnswer = async answer => {
-  if (answer === 'load more') {
-    showEntriesPrompt(max, max + skip);
-  } else {
-    const entry = await findEntry(answer);
-    const text = cat(entry.filePath);
-    echo(text);
-  }
+    .then(async answer => {
+      const entry = await findEntryByTitle(answer.title);
+      editor(entry.filePath, true);
+    });
 };
 
 export default showEntriesPrompt;
