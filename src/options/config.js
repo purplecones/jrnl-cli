@@ -28,18 +28,21 @@ export default async () => {
       },
     ])
     .then(async answers => {
-      if (answers.configOptions === 'git')
+      if (answers.configOptions === 'git') {
         if (!isGitInstalled) {
           console.log('git is not installed. Install it before running this.');
           process.exit(1);
         }
+      }
 
-        await updateConfig({ useGit: answers.git, repo: answers.repo });
+      await updateConfig({ useGit: answers.git, repo: answers.repo });
 
-        if (await pathExists(`${jrnlPath}/.git`)) {
-          console.log('.git folder already exits. Config saved however you might run into sync issues. Remove the .git folder and run this command again.');
-        } else {
-          await init(answers.repo);
-        }
+      if (await pathExists(`${jrnlPath}/.git`)) {
+        console.log(
+          '.git folder already exits. Config saved however you might run into sync issues. Remove the .git folder and run this command again.',
+        );
+      } else {
+        await init(answers.repo);
+      }
     });
 };

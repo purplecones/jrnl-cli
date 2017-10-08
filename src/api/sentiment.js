@@ -1,3 +1,3 @@
 import sentiment from 'sentiment';
 
-export const getSentimentScore = text => sentiment(text);
+export default text => sentiment(text);

@@ -1,5 +1,4 @@
 import Datastore from 'nedb';
-import { merge } from 'lodash';
 import { dbPath } from './constants';
 import { makeFolder } from './files';
 

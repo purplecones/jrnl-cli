@@ -3,9 +3,8 @@ import moment from 'moment';
 import changeCase from 'change-case';
 import { filesPath } from '../api/constants';
 import { writeFile } from '../api/files';
-import { addEntry, findEntries } from '../api/db';
-import { init, pull, commit, push } from '../api/git';
-import { getConfig } from '../api/db';
+import { addEntry, getConfig } from '../api/db';
+import { pull, commit, push } from '../api/git';
 import { getSentimentScore } from '../api/sentiment';
 import { generateReadme } from '../api/common';
 

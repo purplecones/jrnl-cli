@@ -24,7 +24,10 @@ export const makeFolder = path =>
 export const fuzzySearch = async regExpString => {
   const filesObject = await searchFile(new RegExp(regExpString));
   const fileNames = [];
+  // TODO find a better way to do this
+  // eslint-disable-next-line
   for (const prop in filesObject) {
+    // eslint-disable-next-line
     if (filesObject.hasOwnProperty(prop)) {
       const fileParts = prop.split('/');
       fileNames.push(fileParts[fileParts.length - 1]);

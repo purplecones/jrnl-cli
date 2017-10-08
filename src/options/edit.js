@@ -1,6 +1,6 @@
 import inquirer from 'inquirer';
 import autocomplete from 'inquirer-autocomplete-prompt';
-import { fuzzySearch, readFile, searchFile } from '../api/files.js';
+import { fuzzySearch, readFile } from '../api/files.js';
 import {
   findEntryByTitle,
   getConfig,

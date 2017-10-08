@@ -7,7 +7,9 @@
     "start": "node build/main.js",
     "prestart": "npm run build && chmod +x build/main.js",
     "build": "backpack build",
-    "prepublish": "npm run build"
+    "prepublish": "npm run build",
+    "eslint": "eslint_d src",
+    "test": "npm run eslint"
   },
   "preferGlobal": true,
   "bin": "./build/main.js",
