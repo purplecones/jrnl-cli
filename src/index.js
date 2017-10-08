@@ -1,5 +1,5 @@
 import program from 'commander';
-import { add, read, edit, config } from './options';
+import { add, read, edit, config, search } from './options';
 
 program
   .version('0.0.10')
@@ -22,6 +22,12 @@ program
   .alias('e')
   .description('Edit an entry')
   .action(() => edit());
+
+program
+  .command('search')
+  .alias('s')
+  .description('Search entries')
+  .action(() => search());
 
 program
   .command('config')

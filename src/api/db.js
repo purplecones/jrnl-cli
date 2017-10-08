@@ -26,7 +26,7 @@ export const editEntry = (id, data) => {
     journals.update(
       { _id: id },
       {
-        $set: data
+        $set: data,
       },
       (err, updatedDoc) => (err ? reject(err) : resolve(updatedDoc)),
     );
@@ -55,6 +55,26 @@ export const findEntry = entryId => {
   });
 };
 
+export const findEntryByTitle = title => {
+  journals.loadDatabase();
+  return new Promise((resolve, reject) => {
+    journals.findOne(
+      { title },
+      (err, doc) => (err ? reject(err) : resolve(doc)),
+    );
+  });
+};
+
+export const findEntriesByFileName = fileNames => {
+  journals.loadDatabase();
+  return new Promise((resolve, reject) => {
+    journals.find(
+      { fileName: { $in: fileNames }},
+      (err, doc) => (err ? reject(err) : resolve(doc)),
+    );
+  });
+};
+
 export const getConfig = () => {
   config.loadDatabase();
   return new Promise((resolve, reject) => {
@@ -64,14 +84,21 @@ export const getConfig = () => {
 
 export const updateConfig = async newConfig => {
   config.loadDatabase();
-  const currentConfig = await getConfig() || undefined;
+  const currentConfig = (await getConfig()) || undefined;
   return new Promise((resolve, reject) => {
     if (currentConfig) {
       // update config
-      config.update({ _id: currentConfig._id }, { $set: newConfig }, (err, doc) => (err ? reject(err) : resolve(doc)));
+      config.update(
+        { _id: currentConfig._id },
+        { $set: newConfig },
+        (err, doc) => (err ? reject(err) : resolve(doc)),
+      );
     } else {
       // insert new config
-      config.insert(newConfig, (err, doc) => (err ? reject(err) : resolve(doc)));
+      config.insert(
+        newConfig,
+        (err, doc) => (err ? reject(err) : resolve(doc)),
+      );
     }
   });
 };

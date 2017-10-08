@@ -18,7 +18,13 @@ export const commit = async (message = undefined) => {
   if (!message) message = `Journal updated on ${date} at ${time}`;
   cd(jrnlPath);
   await exec('git add .');
-  await exec(`git commit -m '${message}'`);
+  try {
+    await exec(`git commit -m '${message}'`);
+
+  } catch (e) {
+      // console.error(e);
+  }
+
 };
 
 export const push = async () => {
