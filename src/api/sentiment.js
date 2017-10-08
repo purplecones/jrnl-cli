@@ -1,3 +1,4 @@
 import sentiment from 'sentiment';
 
-export default text => sentiment(text);
+// eslint-disable-next-line
+export const getSentimentScore = text => sentiment(text);

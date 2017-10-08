@@ -9,7 +9,7 @@
     "build": "backpack build",
     "prepublish": "npm run build",
     "eslint": "eslint_d src",
-    "test": "npm run eslint"
+    "test": "npm run eslint && npm run build"
   },
   "preferGlobal": true,
   "bin": "./build/main.js",
@@ -27,5 +27,8 @@
     "nedb": "^1.8.0",
     "sentiment": "^4.0.1",
     "shelljs": "^0.7.8"
+  },
+  "devDependencies": {
+    "jest": "^21.2.1"
   }
 }

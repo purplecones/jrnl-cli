@@ -4,7 +4,8 @@ import { findEntries } from './db';
 import { writeFile } from './files';
 import { jrnlPath } from '../api/constants';
 
-export default async () => {
+// eslint-disable-next-line
+export const generateReadme = async () => {
   const entries = await findEntries();
   const markdownData = entries.map(entry => [
     moment(entry.date).format('ddd, MMM Do YYYY'),
