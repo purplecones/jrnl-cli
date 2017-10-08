@@ -1,10 +1,15 @@
 import inquirer from 'inquirer';
 import { writeFile } from '../api/files';
-import { findEntry, findEntries } from '../api/db';
+import { findEntry, findEntries, getConfig } from '../api/db';
+import { pull } from '../api/git';
 import { cat, echo } from '../api/shell';
 import moment from 'moment';
 
 const showEntriesPrompt = async (max = 20, skip = 0) => {
+  const config = await getConfig();
+  if (config && config.useGit) {
+    await pull();
+  }
   const entries = await findEntries(max, skip);
   inquirer
     .prompt([

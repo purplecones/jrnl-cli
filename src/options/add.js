@@ -4,12 +4,16 @@ import changeCase from 'change-case';
 import { filesPath } from '../api/constants';
 import { writeFile } from '../api/files';
 import { addEntry, findEntries } from '../api/db';
-import { init, commit, push } from '../api/git';
+import { init, pull, commit, push } from '../api/git';
 import { getConfig } from '../api/db';
 import { getSentimentScore } from '../api/sentiment';
 import { generateReadme } from '../api/common';
 
-export default () => {
+export default async () => {
+  const config = await getConfig();
+  if (config && config.useGit) {
+    await pull();
+  }
   const questions = [
     {
       type: 'editor',
@@ -30,7 +34,9 @@ export default () => {
         )}-${changeCase.headerCase(title)}.md`;
         const filePath = `${filesPath}/${fileName}`;
         // remove newlines for sentiment analysis
-        const sentiment = getSentimentScore(text.replace(/[^\x20-\x7E]/gmi, ""));
+        const sentiment = getSentimentScore(
+          text.replace(/[^\x20-\x7E]/gim, ''),
+        );
 
         await writeFile(filePath, content);
         await addEntry({
@@ -43,8 +49,6 @@ export default () => {
 
         await generateReadme();
 
-        // commit and push using git if enabled
-        const config = await getConfig();
         if (config && config.useGit) {
           await commit();
           await push();

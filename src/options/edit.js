@@ -2,12 +2,16 @@ import inquirer from 'inquirer';
 import moment from 'moment';
 import { findEntry, findEntries, getConfig, editEntry } from '../api/db';
 import { editor } from '../api/shell';
-import { init, commit, push } from '../api/git';
+import { init, pull, commit, push } from '../api/git';
 import { readFile } from '../api/files';
 import { getSentimentScore } from '../api/sentiment';
 import { generateReadme } from '../api/common';
 
 const showEntriesPrompt = async (max = 20, skip = 0) => {
+  const config = await getConfig();
+  if (config && config.useGit) {
+    await pull();
+  }
   const entries = await findEntries(max, skip);
   inquirer
     .prompt([
@@ -44,9 +48,7 @@ const handleAnswer = async answer => {
       await editEntry(entry._id, { sentiment });
 
       await generateReadme();
-      
-      // commit and push using git if enabled
-      const config = await getConfig();
+
       if (config && config.useGit) {
         await commit();
         await push();

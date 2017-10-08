@@ -2,9 +2,10 @@ import inquirer from 'inquirer';
 import { updateConfig } from '../api/db';
 import { pathExists } from '../api/shell';
 import { jrnlPath } from '../api/constants';
-import { init, isGitInstalled } from '../api/git';
+import { init, pull, isGitInstalled } from '../api/git';
 
 export default async () => {
+  await pull();
   inquirer
     .prompt([
       {

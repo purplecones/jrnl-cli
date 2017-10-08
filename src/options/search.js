@@ -1,9 +1,18 @@
 import inquirer from 'inquirer';
 import { searchFile } from '../api/files.js';
-import { findEntryByTitle, findEntriesByFileName } from '../api/db.js';
+import {
+  findEntryByTitle,
+  findEntriesByFileName,
+  getConfig,
+} from '../api/db.js';
+import { pull } from '../api/git';
 import { cat, echo } from '../api/shell';
 
 export default (async function() {
+  const config = await getConfig();
+  if (config && config.useGit) {
+    await pull();
+  }
   inquirer.registerPrompt(
     'autocomplete',
     require('inquirer-autocomplete-prompt'),
@@ -27,7 +36,7 @@ export default (async function() {
         },
       },
     ])
-    .then(async (answer) => {
+    .then(async answer => {
       const entry = await findEntryByTitle(answer.title);
       const text = cat(entry.filePath);
       echo(text);
