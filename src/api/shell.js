@@ -16,12 +16,18 @@ export const exec = command =>
 export const pathExists = path => shell.test('-e', path);
 export const editor = (filePath, readOnly = false) => {
   let readOnlyShellFlag;
-  if (currentEditor === 'vim') {
-    readOnlyShellFlag = '-M';
+  let command;
+  if (readOnly) {
+    if (currentEditor === 'vim') {
+      readOnlyShellFlag = '-r';
+    }
+    command = 'less';
+  } else {
+    command = currentEditor;
   }
   const options = [filePath];
-  if (readOnly) options.push(readOnlyShellFlag);
-  return spawn(currentEditor, options, {
+  {/* if (readOnly) options.push(readOnlyShellFlag); */}
+  return spawn(command, options, {
     stdio: 'inherit',
   });
 };
